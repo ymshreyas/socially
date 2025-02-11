@@ -7,7 +7,8 @@ import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
 import { createPost } from "@/actions/post.action";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
+import ImageUpload from "./ImageUpload";
 
 const CreatePost = () => {
   const { user } = useUser();
@@ -15,14 +16,15 @@ const CreatePost = () => {
   const [isPosting, setIsPosting] = useState(false);
   const [showImageUpload, setShowImageUpload] = useState(false);
   const [content, setContent] = useState("");
-  const handleSubmit = async () => {if (!content.trim() && !imageUrl) return;
+  const handleSubmit = async () => {
+    if (!content.trim() && !imageUrl) return;
 
     setIsPosting(true);
     try {
       const result = await createPost(content, imageUrl);
       if (result?.success) {
         // reset the form
-        setContent("")
+        setContent("");
         setImageUrl("");
         setShowImageUpload(false);
 
@@ -33,7 +35,8 @@ const CreatePost = () => {
       toast.error("Failed to create post");
     } finally {
       setIsPosting(false);
-    }};
+    }
+  };
   return (
     <Card className="mb-6">
       <CardContent className="pt-6">
@@ -51,7 +54,7 @@ const CreatePost = () => {
             />
           </div>
 
-          {/* {(showImageUpload || imageUrl) && (
+          {(showImageUpload || imageUrl) && (
             <div className="border rounded-lg p-4">
               <ImageUpload
                 endpoint="postImage"
@@ -62,7 +65,7 @@ const CreatePost = () => {
                 }}
               />
             </div>
-          )} */}
+          )}
 
           <div className="flex items-center justify-between border-t pt-4">
             <div className="flex space-x-2">
