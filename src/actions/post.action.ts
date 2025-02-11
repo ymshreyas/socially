@@ -32,7 +32,7 @@ export async function getPosts() {
       include: {
         author: {
           select: {
-            id:true,
+            id: true,
             name: true,
             image: true,
             username: true,
@@ -198,7 +198,8 @@ export async function deleteComment(commentId: string) {
     });
 
     if (!comment) throw new Error("Comment not found");
-    if (comment.authorId !== userId) throw new Error("Unauthorized - no delete permission");
+    if (comment.authorId !== userId)
+      throw new Error("Unauthorized - no delete permission");
 
     await prisma.comment.delete({
       where: { id: commentId },
@@ -222,7 +223,8 @@ export async function deletePost(postId: string) {
     });
 
     if (!post) throw new Error("Post not found");
-    if (post.authorId !== userId) throw new Error("Unauthorized - no delete permission");
+    if (post.authorId !== userId)
+      throw new Error("Unauthorized - no delete permission");
 
     await prisma.post.delete({
       where: { id: postId },
