@@ -109,7 +109,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
             <div className="flex space-x-3 sm:space-x-4">
               <Link href={`/profile/${post.author.username}`}>
                 <Avatar className="size-8 sm:w-10 sm:h-10">
-                  <AvatarImage src={post.author.image ?? "/avatar.png"} />
+                  <AvatarImage src={user?.imageUrl ?? "/avatar.png"} />
                 </Avatar>
               </Link>
               {/* POST HEADER AND TEXT CONTENT */}
@@ -212,9 +212,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
                   {post.comments.map((comment) => (
                     <div key={comment.id} className="flex space-x-3">
                       <Avatar className="size-8 flex-shrink-0">
-                        <AvatarImage
-                          src={comment.author.image ?? "/avatar.png"}
-                        />
+                        <AvatarImage src={user?.imageUrl ?? "/avatar.png"} />
                       </Avatar>
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">

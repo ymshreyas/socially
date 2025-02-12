@@ -1,4 +1,7 @@
-import { currentUser } from "@clerk/nextjs/server";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/nextjs";
 import { Card, CardContent } from "./ui/card";
 import { getUserByClerkId } from "@/actions/user.action";
 import Link from "next/link";
@@ -7,11 +10,44 @@ import { Separator } from "./ui/separator";
 import UnauthenticatedSidebar from "./UnauthenticatedSidebar";
 import { LinkIcon, MapPinIcon } from "lucide-react";
 
-async function Sidebar() {
-  const authUser = await currentUser();
-  if (!authUser) return <UnauthenticatedSidebar />;
+interface User {
+  id: string;
+  name: string | null;
+  username: string;
+  bio: string | null;
+  location: string | null;
+  website: string | null;
+  _count: {
+    following: number;
+    followers: number;
+  };
+}
 
-  const user = await getUserByClerkId(authUser.id);
+const Sidebar = () => {
+  const { user: authUser, isLoaded } = useUser();
+  const [user, setUser] = useState<User | null>(() => ({
+    id: "",
+    name: "Loading...",
+    username: "loading...",
+    bio: null,
+    location: null,
+    website: null,
+    _count: { following: 0, followers: 0 },
+  }));
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (authUser) {
+        const fetchedUser = await getUserByClerkId(authUser.id);
+        setUser(fetchedUser);
+      }
+    };
+
+    fetchUser();
+  }, [authUser]);
+
+  if (!isLoaded) return null; // Ensures Clerk is fully loaded
+  if (!authUser) return <UnauthenticatedSidebar />;
   if (!user) return null;
 
   return (
@@ -24,7 +60,7 @@ async function Sidebar() {
               className="flex flex-col items-center justify-center"
             >
               <Avatar className="w-20 h-20 border-2 ">
-                <AvatarImage src={user.image || "/avatar.png"} />
+                <AvatarImage key={authUser?.imageUrl} src={authUser?.imageUrl || "/avatar.png"} />
               </Avatar>
 
               <div className="mt-4 space-y-1">
@@ -78,6 +114,6 @@ async function Sidebar() {
       </Card>
     </div>
   );
-}
+};
 
 export default Sidebar;

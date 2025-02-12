@@ -43,6 +43,7 @@ interface ProfilePageClientProps {
   posts: Posts;
   likedPosts: Posts;
   isFollowing: boolean;
+  profilePic: string;
 }
 
 function ProfilePageClient({
@@ -50,6 +51,7 @@ function ProfilePageClient({
   likedPosts,
   posts,
   user,
+  profilePic
 }: ProfilePageClientProps) {
   const { user: currentUser } = useUser();
   const [showEditDialog, setShowEditDialog] = useState(false);
@@ -106,7 +108,7 @@ function ProfilePageClient({
             <CardContent className="pt-6">
               <div className="flex flex-col items-center text-center">
                 <Avatar className="w-24 h-24">
-                  <AvatarImage src={user.image ?? "/avatar.png"} />
+                  <AvatarImage src={profilePic} />
                 </Avatar>
                 <h1 className="mt-4 text-2xl font-bold">
                   {user.name ?? user.username}

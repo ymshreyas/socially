@@ -9,6 +9,7 @@ import {
 import { notFound } from "next/navigation";
 import React from "react";
 import ProfilePageClient from "./ProfilePageClient";
+import { currentUser } from "@clerk/nextjs/server";
 
 export async function generateMetadata({
   params,
@@ -23,6 +24,8 @@ export async function generateMetadata({
   };
 }
 async function ProilePageServer({ params }: { params: { username: string } }) {
+  const profile = await currentUser();
+  const profiePic = profile?.imageUrl || "/avatar.png";
   const user = await getProfileByUsername(params.username);
   if (!user) notFound();
   const [posts, likedPosts, isCurrentUserFollowing] = await Promise.all([
@@ -37,6 +40,7 @@ async function ProilePageServer({ params }: { params: { username: string } }) {
       posts={posts}
       likedPosts={likedPosts}
       isFollowing={isCurrentUserFollowing}
+      profilePic={profiePic}
     />
   );
 }
