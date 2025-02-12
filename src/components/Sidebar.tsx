@@ -47,7 +47,7 @@ const Sidebar = () => {
   }, [authUser]);
 
   if (!isLoaded) return null; // Ensures Clerk is fully loaded
-  if (!authUser) return <UnauthenticatedSidebar />;
+  if (!authUser) return null;
   if (!user) return null;
 
   return (
@@ -60,7 +60,10 @@ const Sidebar = () => {
               className="flex flex-col items-center justify-center"
             >
               <Avatar className="w-20 h-20 border-2 ">
-                <AvatarImage key={authUser?.imageUrl} src={authUser?.imageUrl || "/avatar.png"} />
+                <AvatarImage
+                  key={authUser?.imageUrl}
+                  src={authUser?.imageUrl || "/avatar.png"}
+                />
               </Avatar>
 
               <div className="mt-4 space-y-1">

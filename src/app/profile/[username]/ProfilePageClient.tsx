@@ -51,7 +51,7 @@ function ProfilePageClient({
   likedPosts,
   posts,
   user,
-  profilePic
+  profilePic,
 }: ProfilePageClientProps) {
   const { user: currentUser } = useUser();
   const [showEditDialog, setShowEditDialog] = useState(false);

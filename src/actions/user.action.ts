@@ -52,8 +52,8 @@ export async function getDbUserId() {
   const { userId: clerkID } = await auth();
   if (!clerkID) return null;
   const user = await getUserByClerkId(clerkID);
-  if (!user) throw new Error("User not found");
-  return user.id;
+  if (!user) revalidatePath("/");
+  return user?.id;
 }
 
 export async function getRandomUsers() {
